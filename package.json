@@ -1,0 +1,15 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "[![Actions Status](https://github.com/shalimovVladislav/frontend-project-12/workflows/hexlet-check/badge.svg)](https://github.com/shalimovVladislav/frontend-project-12/actions)",
+  "main": "index.js",
+  "scripts": {
+    "start": "start-server -s ./frontend/build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hexlet/chat-server": "^1.1.6"
+  }
+}
