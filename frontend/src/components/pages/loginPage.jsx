@@ -1,29 +1,28 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Outlet } from 'react-router-dom';
-import image from '../../assets/Login.jpg';
+import image from '../../assets/login.jpg';
 
 const SignupForm = () => {
+  const SignupSchema = yup.object().shape({
+    username: yup.string()
+      .required('Обязательное поле')
+      .min(3, 'От 3 до 20 символов')
+      .max(20, 'От 3 до 20 символов'),
+    password: yup.string()
+      .required('Обязательное поле')
+      .min(6, 'Не менее 6 символов'),
+    confirmPassword: yup.string()
+      .oneOf([yup.ref('password')], 'Пароли должны совпадать'),
+  });
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
       confirmPassword: '',
     },
-    onSubmit: async (values) => {
-      const userSchema = yup.object({
-        username: yup.string().required().min(3).max(20),
-        password: yup.string().required().min(6),
-        confirmPassword: yup.string().oneOf([values.password]),
-      });
-      try {
-        const user = await userSchema.validate(values);
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    onChange: (values) => {
+    validationSchema: SignupSchema,
+    onSubmit: (values) => {
       console.log(values);
     },
   });
@@ -33,20 +32,66 @@ const SignupForm = () => {
         Регистрация
       </h1>
       <div className="form-floating mb-3">
+        <input
+          placeholder="От 3 до 20 символов"
+          type="text"
+          name="username"
+          autoComplete="username"
+          required
+          autoFocus
+          id="username"
+          className={`form-control ${formik.touched.username && formik.errors.username ? 'is-invalid' : ''}`}
+          onBlur={formik.handleBlur}
+          onChange={formik.handleChange}
+          value={formik.values.username}
+        />
         <label className="form-label" htmlFor="username">Имя пользователя</label>
-        <input placeholder="От 3 до 20 символов" name="username" autoComplete="username" required="" id="username" className="form-control" value={formik.values.username} onChange={formik.handleChange} />
+        {
+          formik.touched.username
+          && formik.errors.username
+          && <div className="invalid-tooltip">{formik.errors.username}</div>
+        }
       </div>
       <div className="form-floating mb-3">
+        <input
+          placeholder="Не менее 6 символов"
+          name="password"
+          aria-describedby="passwordHelpBlock"
+          required=""
+          autoComplete="new-password"
+          type="password"
+          id="password"
+          className={`form-control ${formik.touched.password && formik.errors.password ? 'is-invalid' : ''}`}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.password}
+        />
         <label className="form-label" htmlFor="password">Пароль</label>
-        <input placeholder="Не менее 6 символов" name="password" aria-describedby="passwordHelpBlock" required="" autoComplete="new-password" type="password" id="password" className="form-control" value={formik.values.password} onChange={formik.handleChange} />
-        <div className="invalid-tooltip">
-          Обязательное поле
-        </div>
+        {
+          formik.touched.password
+          && formik.errors.password
+          && <div className="invalid-tooltip">{formik.errors.password}</div>
+        }
       </div>
       <div className="form-floating mb-4">
+        <input
+          placeholder="Пароли должны совпадать"
+          name="confirmPassword"
+          required
+          autoComplete="new-password"
+          type="password"
+          id="confirmPassword"
+          className={`form-control ${formik.touched.confirmPassword && formik.errors.confirmPassword ? 'is-invalid' : ''}`}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.confirmPassword}
+        />
         <label className="form-label" htmlFor="confirmPassword">Подтвердите пароль</label>
-        <input placeholder="Пароли должны совпадать" name="confirmPassword" required="" autoComplete="new-password" type="password" id="confirmPassword" className="form-control" value={formik.values.confirmPassword} onChange={formik.handleChange} />
-        <div className="invalid-tooltip" />
+        {
+          formik.touched.confirmPassword
+          && formik.errors.confirmPassword
+          && <div className="invalid-tooltip">{formik.errors.confirmPassword}</div>
+        }
       </div>
       <button type="submit" className="w-100 btn btn-outline-primary">
         Зарегистрироваться
@@ -56,7 +101,7 @@ const SignupForm = () => {
 };
 
 const Login = () => (
-  <div className="h-100">
+  <div className="h-100 align-bottom">
     <div className="h-100" id="chat">
       <div className="d-flex flex-column h-100">
         <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
@@ -71,10 +116,8 @@ const Login = () => (
             <div className="col-12 col-md-8 col-xxl-6">
               <div className="card shadow-sm">
                 <div className="card-body d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
-                  <div>
-                    <img src={image} className="rounded-circle" alt="Регистрация" />
-                    <SignupForm />
-                  </div>
+                  <img src={image} className="rounded-circle mx-auto d-block" alt="Регистрация" />
+                  <SignupForm />
                 </div>
               </div>
             </div>
@@ -83,7 +126,6 @@ const Login = () => (
       </div>
       <div className="Toastify" />
     </div>
-    <Outlet />
   </div>
 );
 
