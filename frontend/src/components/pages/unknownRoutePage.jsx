@@ -1,5 +1,5 @@
 import React from 'react';
-import image from '../../assets/NotFound.png';
+import image from '../../assets/notFound.png';
 
 const NotFound = () => (
   <div className="h-100">
@@ -13,7 +13,7 @@ const NotFound = () => (
           </div>
         </nav>
         <div className="text-center">
-          <img alt="Страница не найдена" className="img-fluid h-25 w-25" src={image} />
+          <img alt="Страница не найдена" className="img-fluid h-25" src={image} />
           <h1 className="h4 text-muted">Страница не найдена</h1>
           <p className="text-muted">
             Но вы можете перейти
