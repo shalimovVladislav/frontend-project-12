@@ -2,21 +2,24 @@ import React, { useState, useContext } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import userContext from '../elements/userContext';
+import Navbar from '../elements/navbar';
 import image from '../../assets/login.jpg';
 
 const LoginForm = () => {
   const [isAuthFailed, setAuthFailed] = useState(false);
   const navigate = useNavigate();
   const { setUser } = useContext(userContext);
+  const { t } = useTranslation();
   const LoginSchema = yup.object().shape({
     username: yup.string()
-      .required('Обязательное поле')
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов'),
+      .required(t('forms.invalidTooltips.requiredField'))
+      .min(3, t('forms.invalidTooltips.requiredCharactersNumber'))
+      .max(20, t('forms.invalidTooltips.requiredCharactersNumber')),
     password: yup.string()
-      .required('Обязательное поле'),
+      .required(t('forms.invalidTooltips.requiredField')),
   });
   const formik = useFormik({
     initialValues: {
@@ -40,21 +43,21 @@ const LoginForm = () => {
   });
   return (
     <form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
-      <h1 className="text-center mb-4">Войти</h1>
+      <h1 className="text-center mb-4">{t('loginForm.login')}</h1>
       <div className="form-floating mb-3">
         <input
           name="username"
           autoComplete="username"
           required
           autoFocus
-          placeholder="Ваш ник"
+          placeholder={t('loginForm.yourNickname')}
           id="username"
           className={`form-control ${(formik.touched.username && formik.errors.username) || isAuthFailed ? 'is-invalid' : ''}`}
           onBlur={formik.handleBlur}
           onChange={formik.handleChange}
           value={formik.values.username}
         />
-        <label htmlFor="username">Ваш ник</label>
+        <label htmlFor="username">{t('loginForm.yourNickname')}</label>
         {
           formik.touched.username
           && formik.errors.username
@@ -66,7 +69,7 @@ const LoginForm = () => {
           name="password"
           autoComplete="current-password"
           required
-          placeholder="Пароль"
+          placeholder={t('forms.password')}
           type="password"
           id="password"
           className={`form-control ${(formik.touched.password && formik.errors.password) || isAuthFailed ? 'is-invalid' : ''}`}
@@ -74,7 +77,7 @@ const LoginForm = () => {
           onBlur={formik.handleBlur}
           value={formik.values.password}
         />
-        <label className="form-label" htmlFor="password">Пароль</label>
+        <label className="form-label" htmlFor="password">{t('forms.password')}</label>
         {
           formik.touched.password
           && formik.errors.password
@@ -82,46 +85,45 @@ const LoginForm = () => {
         }
         {
           isAuthFailed
-          && <div className="invalid-tooltip opacity-75">Неверные имя пользователя или пароль</div>
+          && <div className="invalid-tooltip opacity-75">{t('loginForm.invalidUsernameOrPassword')}</div>
         }
       </div>
-      <button type="submit" className="w-100 mb-3 btn btn-outline-primary">Войти</button>
+      <button type="submit" className="w-100 mb-3 btn btn-outline-primary">{t('loginForm.login')}</button>
     </form>
   );
 };
-const Login = () => (
-  <>
-    <div className="d-flex flex-column h-100">
-      <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
-        <div className="container">
-          <Link to="/" className="navbar-brand">Hexlet Chat</Link>
-        </div>
-      </nav>
-      <div className="container-fluid h-100">
-        <div className="row justify-content-center align-content-center h-100">
-          <div className="col-12 col-md-8 col-xxl-6">
-            <div className="card shadow-sm">
-              <div className="card-body row p-5">
-                <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                  <img src={image} className="rounded-circle" alt="Войти" />
+const Login = () => {
+  const { t } = useTranslation();
+  return (
+    <>
+      <div className="d-flex flex-column h-100">
+        <Navbar />
+        <div className="container-fluid h-100">
+          <div className="row justify-content-center align-content-center h-100">
+            <div className="col-12 col-md-8 col-xxl-6">
+              <div className="card shadow-sm">
+                <div className="card-body row p-5">
+                  <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
+                    <img src={image} className="rounded-circle" alt={t('loginForm.login')} />
+                  </div>
+                  <LoginForm />
                 </div>
-                <LoginForm />
-              </div>
-              <div className="card-footer p-4">
-                <div className="text-center">
-                  <span>Нет аккаунта? </span>
-                  <a href="/signup">
-                    Регистрация
-                  </a>
+                <div className="card-footer p-4">
+                  <div className="text-center">
+                    <span>{t('loginForm.noAccount')}</span>
+                    <a href="/signup">
+                      {t('forms.registration')}
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div className="Toastify" />
-  </>
-);
+      <div className="Toastify" />
+    </>
+  );
+};
 
 export default Login;
