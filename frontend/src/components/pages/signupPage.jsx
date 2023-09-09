@@ -2,23 +2,26 @@ import React, { useContext } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import userContext from '../elements/userContext';
+import Navbar from '../elements/navbar';
 import image from '../../assets/singup.jpg';
 
 const SignupForm = () => {
   const navigate = useNavigate();
   const { setUser } = useContext(userContext);
+  const { t } = useTranslation();
   const SignupSchema = yup.object().shape({
     username: yup.string()
-      .required('Обязательное поле')
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов'),
+      .required(t('forms.invalidTooltips.requiredField'))
+      .min(3, t('forms.invalidTooltips.requiredCharactersNumber'))
+      .max(20, t('forms.invalidTooltips.requiredCharactersNumber')),
     password: yup.string()
-      .required('Обязательное поле')
-      .min(6, 'Не менее 6 символов'),
+      .required(t('forms.invalidTooltips.requiredField'))
+      .min(6, t('signupForm.minSixСharacters')),
     confirmPassword: yup.string()
-      .oneOf([yup.ref('password')], 'Пароли должны совпадать'),
+      .oneOf([yup.ref('password')], t('signupForm.passwordsMustMatch')),
   });
   const formik = useFormik({
     initialValues: {
@@ -36,11 +39,11 @@ const SignupForm = () => {
   return (
     <form className="w-50" onSubmit={formik.handleSubmit}>
       <h1 className="text-center mb-4">
-        Регистрация
+        {t('forms.registration')}
       </h1>
       <div className="form-floating mb-3">
         <input
-          placeholder="От 3 до 20 символов"
+          placeholder={t('forms.invalidTooltips.requiredCharactersNumber')}
           type="text"
           name="username"
           autoComplete="username"
@@ -52,7 +55,7 @@ const SignupForm = () => {
           onChange={formik.handleChange}
           value={formik.values.username}
         />
-        <label className="form-label" htmlFor="username">Имя пользователя</label>
+        <label className="form-label" htmlFor="username">{t('signupForm.username')}</label>
         {
           formik.touched.username
           && formik.errors.username
@@ -61,7 +64,7 @@ const SignupForm = () => {
       </div>
       <div className="form-floating mb-3">
         <input
-          placeholder="Не менее 6 символов"
+          placeholder={t('signupForm.minSixСharacters')}
           name="password"
           aria-describedby="passwordHelpBlock"
           required=""
@@ -73,7 +76,7 @@ const SignupForm = () => {
           onBlur={formik.handleBlur}
           value={formik.values.password}
         />
-        <label className="form-label" htmlFor="password">Пароль</label>
+        <label className="form-label" htmlFor="password">{t('forms.password')}</label>
         {
           formik.touched.password
           && formik.errors.password
@@ -82,7 +85,7 @@ const SignupForm = () => {
       </div>
       <div className="form-floating mb-4">
         <input
-          placeholder="Пароли должны совпадать"
+          placeholder={t('signupForm.passwordsMustMatch')}
           name="confirmPassword"
           required
           autoComplete="new-password"
@@ -93,7 +96,7 @@ const SignupForm = () => {
           onBlur={formik.handleBlur}
           value={formik.values.confirmPassword}
         />
-        <label className="form-label" htmlFor="confirmPassword">Подтвердите пароль</label>
+        <label className="form-label" htmlFor="confirmPassword">{t('signupForm.confirmPassword')}</label>
         {
           formik.touched.confirmPassword
           && formik.errors.confirmPassword
@@ -101,35 +104,34 @@ const SignupForm = () => {
         }
       </div>
       <button type="submit" className="w-100 btn btn-outline-primary">
-        Зарегистрироваться
+        {t('signupForm.signup')}
       </button>
     </form>
   );
 };
 
-const Signup = () => (
-  <>
-    <div className="d-flex flex-column h-100">
-      <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
-        <div className="container">
-          <Link to="/" className="navbar-brand">Hexlet Chat</Link>
-        </div>
-      </nav>
-      <div className="container-fluid h-100">
-        <div className="row justify-content-center align-content-center h-100">
-          <div className="col-12 col-md-8 col-xxl-6">
-            <div className="card shadow-sm">
-              <div className="card-body d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
-                <img src={image} className="rounded-circle mx-auto d-block" alt="Регистрация" />
-                <SignupForm />
+const Signup = () => {
+  const { t } = useTranslation();
+  return (
+    <>
+      <div className="d-flex flex-column h-100">
+        <Navbar />
+        <div className="container-fluid h-100">
+          <div className="row justify-content-center align-content-center h-100">
+            <div className="col-12 col-md-8 col-xxl-6">
+              <div className="card shadow-sm">
+                <div className="card-body d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
+                  <img src={image} className="rounded-circle mx-auto d-block" alt={t('forms.registration')} />
+                  <SignupForm />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div className="Toastify" />
-  </>
-);
+      <div className="Toastify" />
+    </>
+  );
+};
 
 export default Signup;
