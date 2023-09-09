@@ -1,16 +1,31 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import UserContext from './userContext.js';
 
 const UserProvider = ({ children }) => {
-  const initialState = localStorage.getItem('user');
+  const storedUserData = localStorage.getItem('userData');
+  const initialState = JSON.parse(storedUserData);
   const [user, setContextUser] = useState(initialState);
 
   const setUser = (u) => {
     setContextUser(u);
-    localStorage.setItem('user', u);
+    localStorage.setItem('userData', JSON.stringify(u));
   };
 
-  const value = useMemo(() => ({ user, setUser }), [user]);
+  const removeUser = () => {
+    setContextUser(null);
+    localStorage.removeItem('userData');
+  };
+
+  const isAuthorized = () => (user !== null);
+
+  const memoizedIsAuthorized = useCallback(isAuthorized, [user]);
+
+  const value = useMemo(() => ({
+    user,
+    setUser,
+    removeUser,
+    isAuthorized: memoizedIsAuthorized,
+  }), [user, memoizedIsAuthorized]);
 
   return (
     <UserContext.Provider value={value}>
@@ -18,4 +33,5 @@ const UserProvider = ({ children }) => {
     </UserContext.Provider>
   );
 };
+
 export default UserProvider;
