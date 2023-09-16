@@ -11,7 +11,6 @@ parserOptions:
     jsx: true
   ecmaVersion: latest
   sourceType: module
-parser: '@typescript-eslint/parser',
 plugins:
   - react
   - functional
