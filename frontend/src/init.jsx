@@ -20,10 +20,14 @@ export default async () => {
       fallbackLng: 'ru',
     });
 
+  const store = configureStore({
+    reducer,
+  });
+
   const socket = io();
 
   socket.on('newMessage', (payload) => {
-    console.log(payload); // => { body: "new message", channelId: 7, id: 8, username: "admin" }
+    store.dispatch(actions.addMessage(payload));
   });
   socket.on('newChannel', (payload) => {
     console.log(payload); // { id: 6, name: "new channel", removable: true }
@@ -36,12 +40,8 @@ export default async () => {
   });
 
   const api = {
-    
+    sendMessage: (data) => socket.timeout(3000).emit('newMessage', data),
   };
-
-  const store = configureStore({
-    reducer,
-  });
 
   const vdom = (
     <Provider store={store}>
