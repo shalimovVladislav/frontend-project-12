@@ -1,4 +1,4 @@
-import { combineReducers } from '@reduxjs/toolkit';
+import { combineReducers, createSelector } from '@reduxjs/toolkit';
 
 import channelsReducer, { actions as channelsActions, selectors as channelsSelectors } from './channelsReducer.js';
 import messagesReducer, { actions as messagesActions, selectors as messagesSelectors } from './messagesReducer.js';
@@ -6,15 +6,16 @@ import messagesReducer, { actions as messagesActions, selectors as messagesSelec
 const getCurrentChannelId = (state) => state.channels.currentChannelId;
 const getCurrentChannel = (state) => {
   const currentChannelId = getCurrentChannelId(state);
-  const currentChannel = channelsSelectors.selectIds(state, currentChannelId);
+  const currentChannel = channelsSelectors.selectById(state, currentChannelId);
   return currentChannel;
 };
-const getMessagesForCurrentChannel = (state) => {
-  const currentChannelId = getCurrentChannelId(state);
-  const messages = messagesSelectors.selectAll(state);
+const getMessagesForCurrentChannel = createSelector([
+  getCurrentChannelId,
+  messagesSelectors.selectAll,
+], (currentChannelId, messages) => {
   const messagesForCurrentChannel = messages.filter((m) => m.channelId === currentChannelId);
   return messagesForCurrentChannel;
-};
+});
 
 export const selectors = {
   channels: channelsSelectors,
@@ -30,6 +31,6 @@ export const actions = {
 };
 
 export default combineReducers({
-  channelsReducer,
-  messagesReducer,
+  channels: channelsReducer,
+  messages: messagesReducer,
 });

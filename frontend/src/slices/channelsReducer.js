@@ -15,6 +15,10 @@ const channelsSlice = createSlice({
       channelsAdapter.addMany(state, channels);
       state.currentChannelId = currentChannelId;
     },
+    setCurrentChannel(state, { payload }) {
+      const { channelId } = payload;
+      state.currentChannelId = channelId;
+    },
   },
 });
 

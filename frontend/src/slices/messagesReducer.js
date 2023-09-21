@@ -9,7 +9,9 @@ const initialState = messagesAdapter.getInitialState();
 const messagesSlice = createSlice({
   name: 'messages',
   initialState,
-  reducers: {},
+  reducers: {
+    addMessage: messagesAdapter.addOne,
+  },
   extraReducers: (builder) => {
     builder
       .addCase(channelsActions.setInitialState, (state, { payload }) => {
