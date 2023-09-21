@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { actions, selectors } from '../slices/index.js';
+import { selectors } from '../slices/index.js';
 import NewMessageForm from './NewMessageForm.jsx';
 
 const Message = ({ username, body }) => (

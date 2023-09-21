@@ -23,9 +23,23 @@ const NewMessageForm = ({ channel }) => {
   const formik = useFormik({
     initialValues: { body: '' },
     validationSchema,
-    onSubmit: async (values) => {
-      console.log(values);
+    onSubmit: async ({ body }) => {
+      const message = {
+        body,
+        channelId: channel.id,
+        username,
+      };
+
+      try {
+        api.sendMessage(message);
+        formik.resetForm();
+      } catch (err) {
+        console.log(err);
+      }
+      formik.setSubmitting(false);
+      inputRef.current.focus();
     },
+    validateOnBlur: false,
   });
 
   useEffect(() => {

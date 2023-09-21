@@ -63,7 +63,7 @@ const ChannelsBox = () => {
   const currentChannelId = useSelector(selectors.getCurrentChannelId);
 
   const handleChooseChannel = (channelId) => () => {
-
+    dispatch(actions.setCurrentChannel({ channelId }));
   };
   const handleAddChannel = () => {
 
@@ -99,8 +99,8 @@ const ChannelsBox = () => {
             channel={channel}
             isCurrent={channel.id === currentChannelId}
             handleChoose={handleChooseChannel(channel.id)}
-            handleRemove={handleRemoveChannel}
-            handleRename={handleRenameChannel}
+            handleRemove={handleRemoveChannel(channel.id)}
+            handleRename={handleRenameChannel(channel.id)}
           />
         ))}
       </ul>
