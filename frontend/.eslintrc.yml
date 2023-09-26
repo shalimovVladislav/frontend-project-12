@@ -24,7 +24,6 @@ rules:
   react/react-in-jsx-scope: 0
   jsx-a11y/label-has-associated-control: 0
   jsx-a11y/no-autofocus: 0
-  functional/no-conditional-statement: 0
   functional/no-expression-statements: 0
   functional/no-return-void: 0
   functional/immutable-data: 0
