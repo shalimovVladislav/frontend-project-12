@@ -30,17 +30,20 @@ export default async () => {
     store.dispatch(actions.addMessage(payload));
   });
   socket.on('newChannel', (payload) => {
-    console.log(payload); // { id: 6, name: "new channel", removable: true }
+    store.dispatch(actions.addChannel(payload));
   });
   socket.on('removeChannel', (payload) => {
-    console.log(payload); // { id: 6 };
+    store.dispatch(actions.removeChannel(payload));
   });
   socket.on('renameChannel', (payload) => {
-    console.log(payload); // { id: 7, name: "new name channel", removable: true }
+    store.dispatch(actions.renameChannel(payload));
   });
 
   const api = {
     sendMessage: (data) => socket.timeout(3000).emit('newMessage', data),
+    createChannel: (data) => socket.timeout(3000).emit('newChannel', data),
+    renameChannel: (data) => socket.timeout(3000).emit('renameChannel', data),
+    removeChannel: (data) => socket.timeout(3000).emit('removeChannel', data),
   };
 
   const vdom = (
