@@ -30,13 +30,14 @@ const ChatPage = () => {
         dispatch(actions.setInitialState(res.data));
       } catch (err) {
         if (!err.isAxiosError) {
-          throw(err);
+          toast.error(t('errors.unknown'));
+          return;
         }
 
         if (err.response?.status === 401) {
           navigate(routes.loginPagePath());
         } else {
-          throw(err);
+          toast.error(t('errors.network'));
         }
       }
     };

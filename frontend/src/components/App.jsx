@@ -6,6 +6,7 @@ import {
   Navigate,
   Outlet,
 } from 'react-router-dom';
+import { ToastContainer as Toaster } from 'react-toastify';
 
 import { AuthContext } from '../contexts/index.js';
 import Login from './Login.jsx';
@@ -70,6 +71,7 @@ const App = () => (
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
+      <Toaster />
     </Router>
   </AuthProvider>
 );

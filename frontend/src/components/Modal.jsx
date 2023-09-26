@@ -4,6 +4,7 @@ import {
   Form,
   Button,
 } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
@@ -41,6 +42,7 @@ const AddChannelForm = ({ handleClose }) => {
       const channel = { name };
       try {
         await api.createChannel(channel);
+        toast.success(t('channels.created'));
         handleClose();
       } catch (err) {
         console.log(err);
@@ -114,6 +116,7 @@ const RemoveChannelForm = ({ handleClose }) => {
     setLoading(true);
     try {
       await api.removeChannel({ id: channelId });
+      toast.success(t('channels.removed'));
       handleClose();
     } catch (e) {
       console.log(e);
@@ -180,6 +183,7 @@ const RenameChannelForm = ({ handleClose }) => {
       const data = { name, id: channelId };
       try {
         await api.renameChannel(data);
+        toast.success(t('channels.renamed'));
         handleClose();
       } catch (err) {
         console.log(err);
