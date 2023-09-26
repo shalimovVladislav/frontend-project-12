@@ -25,7 +25,7 @@ const Channel = ({
               type="button"
               key={channel.id}
               className="w-100 rounded-0 text-start text-truncate"
-              onClick={handleChoose}
+              onClick={handleChoose(channel.id)}
               variant={variant}
             >
               <span className="me-1">#</span>
@@ -46,7 +46,7 @@ const Channel = ({
             variant={variant}
             key={channel.id}
             className="w-100 rounded-0 text-start"
-            onClick={handleChoose}
+            onClick={handleChoose(channel.id)}
           >
             <span className="me-1">#</span>
             {channel.name}
@@ -66,13 +66,13 @@ const ChannelsBox = () => {
     dispatch(actions.setCurrentChannel({ channelId }));
   };
   const handleAddChannel = () => {
-
+    dispatch(actions.openModal({ type: 'addChannel' }));
   };
   const handleRemoveChannel = (channelId) => () => {
-
+    dispatch(actions.openModal({ type: 'removeChannel', extra: { channelId } }));
   };
   const handleRenameChannel = (channelId) => () => {
-
+    dispatch(actions.openModal({ type: 'renameChannel', extra: { channelId } }));
   };
 
   return (
@@ -98,9 +98,9 @@ const ChannelsBox = () => {
             key={channel.id}
             channel={channel}
             isCurrent={channel.id === currentChannelId}
-            handleChoose={handleChooseChannel(channel.id)}
-            handleRemove={handleRemoveChannel(channel.id)}
-            handleRename={handleRenameChannel(channel.id)}
+            handleChoose={handleChooseChannel}
+            handleRemove={handleRemoveChannel}
+            handleRename={handleRenameChannel}
           />
         ))}
       </ul>
