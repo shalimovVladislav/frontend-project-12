@@ -4,6 +4,7 @@ import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
+import leoProfanity from 'leo-profanity';
 
 import { useApi, useAuth } from '../hooks/index.js';
 
@@ -24,8 +25,10 @@ const NewMessageForm = ({ channel }) => {
     initialValues: { body: '' },
     validationSchema,
     onSubmit: async ({ body }) => {
+      leoProfanity.loadDictionary('ru');
+      const filtered = leoProfanity.clean(body);
       const message = {
-        body,
+        body: filtered,
         channelId: channel.id,
         username,
       };

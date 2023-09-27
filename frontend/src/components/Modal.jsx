@@ -9,9 +9,12 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import leoProfanity from 'leo-profanity';
 
 import { selectors, actions } from '../slices/index.js';
 import { useApi } from '../hooks/index.js';
+
+leoProfanity.loadDictionary('ru');
 
 const getValidationSchema = (channels) => yup.object().shape({
   name: yup
@@ -39,7 +42,8 @@ const AddChannelForm = ({ handleClose }) => {
     },
     validationSchema: getValidationSchema(channels),
     onSubmit: async ({ name }) => {
-      const channel = { name };
+      const filteredName = leoProfanity.clean(name);
+      const channel = { name: filteredName };
       try {
         await api.createChannel(channel);
         toast.success(t('channels.created'));
@@ -180,7 +184,8 @@ const RenameChannelForm = ({ handleClose }) => {
     },
     validationSchema: getValidationSchema(channels),
     onSubmit: async ({ name }) => {
-      const data = { name, id: channelId };
+      const filteredName = leoProfanity.clean(name);
+      const data = { name: filteredName, id: channelId };
       try {
         await api.renameChannel(data);
         toast.success(t('channels.renamed'));
