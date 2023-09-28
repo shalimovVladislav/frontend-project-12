@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import i18next from 'i18next';
@@ -48,12 +48,12 @@ export default async () => {
     store.dispatch(actions.renameChannel(payload));
   });
 
-  const api = {
+  const api = useMemo(() => ({
     sendMessage: (data) => socket.timeout(3000).emit('newMessage', data),
     createChannel: (data) => socket.timeout(3000).emit('newChannel', data),
     renameChannel: (data) => socket.timeout(3000).emit('renameChannel', data),
     removeChannel: (data) => socket.timeout(3000).emit('removeChannel', data),
-  };
+  }), []);
 
   const rollbarConfig = {
     enabled: isProduction,
