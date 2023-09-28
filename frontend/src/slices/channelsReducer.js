@@ -37,8 +37,8 @@ const slice = createSlice({
       adapter.removeOne(state, id);
     },
     renameChannel(state, { payload }) {
-      adapter.updateOne(state, {id: payload.id, changes: payload});
-    }
+      adapter.updateOne(state, { id: payload.id, changes: payload });
+    },
   },
 });
 
