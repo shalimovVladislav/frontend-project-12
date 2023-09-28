@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import * as yup from 'yup';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 import { useAuth } from '../hooks/index.js';
 import routes from '../routes.js';
@@ -50,16 +51,16 @@ const Login = () => {
         const { from } = location.state || { from: { pathname: routes.chatPagePath() } };
         navigate(from);
       } catch (err) {
-        console.error(err);
         if (!err.isAxiosError) {
-          throw err;
+          toast.error(t('errors.unknown'));
+          return;
         }
 
         if (err.response?.status === 401) {
           setAuthFailed(true);
           inputRef.current.select();
         } else {
-          throw err;
+          toast.error(t('errors.network'));
         }
       }
     },
@@ -89,7 +90,7 @@ const Login = () => {
                     id="username"
                     autoComplete="username"
                     isInvalid={
-                      (formik.errors.username && formik.touched.username)
+                      (formik.errors.password && formik.touched.password)
                       || authFailed
                     }
                     required
@@ -97,9 +98,10 @@ const Login = () => {
                     placeholder={t('login.username')}
                   />
                   <Form.Label htmlFor="username">{t('login.username')}</Form.Label>
-                  <Form.Control.Feedback type="invalid" className="opacity-75" tooltip placement="right">
-                    {t(formik.errors.username)}
-                  </Form.Control.Feedback>
+                  {
+                    !authFailed
+                    && <Form.Control.Feedback type="invalid" className="opacity-75" tooltip placement="right">{t(formik.errors.username)}</Form.Control.Feedback>
+                  }
                 </Form.Group>
                 <Form.Group className="form-floating mb-4">
                   <Form.Control
@@ -119,7 +121,7 @@ const Login = () => {
                   />
                   <Form.Label htmlFor="password">{t('login.password')}</Form.Label>
                   <Form.Control.Feedback type="invalid" className="opacity-75" tooltip placement="right">
-                    {t(formik.errors.password)}
+                    {authFailed ? t('login.authFailed') : t(formik.errors.password)}
                   </Form.Control.Feedback>
                 </Form.Group>
                 <Button type="submit" variant="outline-primary" className="w-100 mb-3">{t('login.submit')}</Button>
