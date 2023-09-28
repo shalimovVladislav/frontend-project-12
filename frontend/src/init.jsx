@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import i18next from 'i18next';
@@ -7,7 +7,7 @@ import { io } from 'socket.io-client';
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import leoProfanity from 'leo-profanity';
 
-import { ApiContext } from './contexts/index.js';
+import AuthProvider from './components/AuthProvider.jsx';
 import App from './components/App.jsx';
 import reducer, { actions } from './slices/index.js';
 import resources from './locales/index.js';
@@ -48,13 +48,6 @@ export default async () => {
     store.dispatch(actions.renameChannel(payload));
   });
 
-  const api = useMemo(() => ({
-    sendMessage: (data) => socket.timeout(3000).emit('newMessage', data),
-    createChannel: (data) => socket.timeout(3000).emit('newChannel', data),
-    renameChannel: (data) => socket.timeout(3000).emit('renameChannel', data),
-    removeChannel: (data) => socket.timeout(3000).emit('removeChannel', data),
-  }), []);
-
   const rollbarConfig = {
     enabled: isProduction,
     accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
@@ -67,9 +60,9 @@ export default async () => {
       <ErrorBoundary>
         <Provider store={store}>
           <I18nextProvider i18n={i18n}>
-            <ApiContext.Provider value={api}>
+            <AuthProvider socket={socket}>
               <App />
-            </ApiContext.Provider>
+            </AuthProvider>
           </I18nextProvider>
         </Provider>
       </ErrorBoundary>
