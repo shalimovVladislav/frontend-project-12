@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+/* eslint-disable no-param-reassign */
 
 const slice = createSlice({
   name: 'modal',
