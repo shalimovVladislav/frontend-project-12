@@ -4,6 +4,7 @@ import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 import Modal from './Modal.jsx';
 import ChannelsBox from './ChannelsBox.jsx';
@@ -19,10 +20,8 @@ const ChatPage = () => {
   const navigate = useNavigate();
   const auth = useAuth();
 
-  
   useEffect(() => {
-    let didMount = true;
-
+    const didMount = true;
     const fetchData = async () => {
       try {
         const res = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });
@@ -43,8 +42,6 @@ const ChatPage = () => {
     };
 
     fetchData();
-
-    return () => { didMount = false; };
   }, [dispatch, auth, t, navigate]);
 
   return fetching
