@@ -18,13 +18,8 @@ rules:
   import/extensions: 0
   import/no-unresolved: 0
   react/prop-types: 0
-  react/jsx-props-no-spreading: 0
-  react/jsx-no-constructed-context-values: 0
   no-console: 0
-  no-param-reassign: 0
   react/react-in-jsx-scope: 0
-  jsx-a11y/label-has-associated-control: 0
-  jsx-a11y/no-autofocus: 0
   functional/no-expression-statements: 0
   functional/no-return-void: 0
   functional/immutable-data: 0
