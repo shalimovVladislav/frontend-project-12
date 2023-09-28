@@ -1,5 +1,5 @@
-# dependencies
+.env
+
 /node_modules
 
-# production
 /build
