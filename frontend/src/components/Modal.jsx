@@ -14,8 +14,6 @@ import leoProfanity from 'leo-profanity';
 import { selectors, actions } from '../slices/index.js';
 import { useApi } from '../hooks/index.js';
 
-leoProfanity.loadDictionary('ru');
-
 const getValidationSchema = (channels) => yup.object().shape({
   name: yup
     .string()

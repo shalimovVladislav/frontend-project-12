@@ -25,7 +25,6 @@ const NewMessageForm = ({ channel }) => {
     initialValues: { body: '' },
     validationSchema,
     onSubmit: async ({ body }) => {
-      leoProfanity.loadDictionary('ru');
       const filtered = leoProfanity.clean(body);
       const message = {
         body: filtered,
