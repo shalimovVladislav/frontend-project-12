@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import axios from 'axios';
 
-import { useAuth } from '../hooks/index.js';
+import useAuth from '../hooks/useAuth.js';
 import routes from '../routes.js';
 import image from '../assets/registration.jpg';
 

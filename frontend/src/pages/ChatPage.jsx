@@ -6,12 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
-import Modal from './Modal.jsx';
-import ChannelsBox from './ChannelsBox.jsx';
-import ChatBox from './ChatBox.jsx';
+import Modal from '../components/modals/index.jsx';
+import ChannelsBox from '../components/ChannelsBox.jsx';
+import ChatBox from '../components/ChatBox.jsx';
 import { actions } from '../slices/index.js';
 import routes from '../routes.js';
-import { useAuth } from '../hooks/index.js';
+import useAuth from '../hooks/useAuth.js';
 
 const ChatPage = () => {
   const dispatch = useDispatch();
@@ -21,11 +21,10 @@ const ChatPage = () => {
   const auth = useAuth();
 
   useEffect(() => {
-    const didMount = true;
     const fetchData = async () => {
       try {
         const res = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });
-        if (didMount) setFetching(false);
+        setFetching(false);
         dispatch(actions.setInitialState(res.data));
       } catch (err) {
         if (!err.isAxiosError) {

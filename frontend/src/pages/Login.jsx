@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-import { useAuth } from '../hooks/index.js';
+import useAuth from '../hooks/useAuth.js';
 import routes from '../routes.js';
 import image from '../assets/login.jpg';
 
