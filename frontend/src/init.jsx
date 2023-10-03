@@ -7,7 +7,8 @@ import { io } from 'socket.io-client';
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import leoProfanity from 'leo-profanity';
 
-import AuthProvider from './components/AuthProvider.jsx';
+import AuthProvider from './contexts/AuthProvider.jsx';
+import SoketProvider from './contexts/SoketProvider.jsx';
 import App from './components/App.jsx';
 import reducer, { actions } from './slices/index.js';
 import resources from './locales/index.js';
@@ -60,8 +61,10 @@ export default async () => {
       <ErrorBoundary>
         <Provider store={store}>
           <I18nextProvider i18n={i18n}>
-            <AuthProvider socket={socket}>
-              <App />
+            <AuthProvider>
+              <SoketProvider socket={socket}>
+                <App />
+              </SoketProvider>
             </AuthProvider>
           </I18nextProvider>
         </Provider>
