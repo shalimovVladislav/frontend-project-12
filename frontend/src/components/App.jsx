@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -8,49 +8,14 @@ import {
 } from 'react-router-dom';
 import { ToastContainer as Toaster } from 'react-toastify';
 
-import { AuthContext } from '../contexts/index.js';
-import Login from './Login.jsx';
-import Registration from './Registration.jsx';
-import ChatPage from './ChatPage.jsx';
+import Login from '../pages/Login.jsx';
+import Registration from '../pages/Registration.jsx';
+import ChatPage from '../pages/ChatPage.jsx';
 import Navbar from './Navbar.jsx';
-import NotFoundPage from './NotFoundPage.jsx';
+import NotFoundPage from '../pages/NotFoundPage.jsx';
 
-import { useAuth } from '../hooks/index.js';
+import useAuth from '../hooks/useAuth.js';
 import routes from '../routes.js';
-
-const AuthProvider = ({ children }) => {
-  const currentUser = JSON.parse(localStorage.getItem('userData'));
-  const [user, setUser] = useState(currentUser ? { username: currentUser.username } : null);
-
-  const logIn = (userData) => {
-    localStorage.setItem('userData', JSON.stringify(userData));
-    setUser({ username: userData.username });
-  };
-
-  const logOut = () => {
-    localStorage.removeItem('userData');
-    setUser(null);
-  };
-
-  const getAuthHeader = () => {
-    const userData = JSON.parse(localStorage.getItem('userData'));
-
-    return userData?.token ? { Authorization: `Bearer ${userData.token}` } : {};
-  };
-
-  const value = useMemo(() => ({
-    logIn,
-    logOut,
-    getAuthHeader,
-    user,
-  }), [user]);
-
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
 
 const PrivateOutlet = () => {
   const auth = useAuth();
@@ -58,22 +23,20 @@ const PrivateOutlet = () => {
 };
 
 const App = () => (
-  <AuthProvider>
-    <Router>
-      <div className="d-flex flex-column h-100">
-        <Navbar />
-        <Routes>
-          <Route path={routes.loginPagePath()} element={<Login />} />
-          <Route path={routes.signupPagePath()} element={<Registration />} />
-          <Route path={routes.chatPagePath()} element={<PrivateOutlet />}>
-            <Route path="" element={<ChatPage />} />
-          </Route>
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </div>
-      <Toaster />
-    </Router>
-  </AuthProvider>
+  <Router>
+    <div className="d-flex flex-column h-100">
+      <Navbar />
+      <Routes>
+        <Route path={routes.loginPagePath()} element={<Login />} />
+        <Route path={routes.signupPagePath()} element={<Registration />} />
+        <Route path={routes.chatPagePath()} element={<PrivateOutlet />}>
+          <Route path="" element={<ChatPage />} />
+        </Route>
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </div>
+    <Toaster />
+  </Router>
 );
 
 export default App;

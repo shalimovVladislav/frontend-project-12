@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
@@ -17,6 +17,11 @@ const ChatBox = () => {
   const channel = useSelector(selectors.getCurrentChannel);
   const messages = useSelector(selectors.getMessagesForCurrentChannel);
   const { t } = useTranslation();
+  const ref = useRef(null);
+
+  useEffect(() => {
+    ref.current.scrollTop = ref.current.scrollHeight;
+  });
 
   return (
     <div className="d-flex flex-column h-100">
@@ -30,7 +35,7 @@ const ChatBox = () => {
           {`${messages.length} ${t('chat.messageCount', { count: messages.length })}`}
         </span>
       </div>
-      <div id="messages-box" className="chat-messages overflow-auto px-5 ">
+      <div id="messages-box" ref={ref} className="chat-messages overflow-auto px-5 ">
         {messages.map(({ id, username, body }) => (
           <Message
             key={id}

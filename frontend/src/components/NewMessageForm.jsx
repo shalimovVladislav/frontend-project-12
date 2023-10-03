@@ -5,14 +5,17 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import leoProfanity from 'leo-profanity';
+import { useRollbar } from '@rollbar/react';
 
-import { useApi, useAuth } from '../hooks/index.js';
+import useAuth from '../hooks/useAuth.js';
+import useApi from '../hooks/useApi.js';
 
 const NewMessageForm = ({ channel }) => {
   const { t } = useTranslation();
   const { user: { username } } = useAuth();
   const inputRef = useRef(null);
   const api = useApi();
+  const rollbar = useRollbar();
 
   const validationSchema = yup.object().shape({
     body: yup
@@ -33,10 +36,10 @@ const NewMessageForm = ({ channel }) => {
       };
 
       try {
-        api.sendMessage(message);
+        await api.sendMessage(message);
         formik.resetForm();
       } catch (err) {
-        console.log(err);
+        rollbar.error(err);
       }
       formik.setSubmitting(false);
       inputRef.current.focus();

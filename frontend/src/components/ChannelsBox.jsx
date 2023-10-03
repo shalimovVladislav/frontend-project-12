@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
 import { PlusSquare } from 'react-bootstrap-icons';
@@ -61,6 +61,11 @@ const ChannelsBox = () => {
   const { t } = useTranslation();
   const channels = useSelector(selectors.channels.selectAll);
   const currentChannelId = useSelector(selectors.getCurrentChannelId);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    ref.current.scrollTop = ref.current.scrollHeight;
+  });
 
   const handleChooseChannel = (channelId) => () => {
     dispatch(actions.setCurrentChannel({ channelId }));
@@ -91,6 +96,7 @@ const ChannelsBox = () => {
       </div>
       <ul
         id="channels-box"
+        ref={ref}
         className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
       >
         {channels.map((channel) => (
