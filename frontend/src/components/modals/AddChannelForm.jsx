@@ -9,6 +9,7 @@ import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import leoProfanity from 'leo-profanity';
+import { useRollbar } from '@rollbar/react';
 
 import getValidationSchema from './getValidationSchema.js';
 import { selectors } from '../../slices/index.js';
@@ -19,6 +20,7 @@ const AddChannelForm = ({ handleClose }) => {
   const inputRef = useRef(null);
   const api = useApi();
   const { t } = useTranslation();
+  const rollbar = useRollbar();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -37,7 +39,7 @@ const AddChannelForm = ({ handleClose }) => {
         toast.success(t('channels.created'));
         handleClose();
       } catch (err) {
-        
+        rollbar.error(err);
       }
     },
     validateOnBlur: false,
