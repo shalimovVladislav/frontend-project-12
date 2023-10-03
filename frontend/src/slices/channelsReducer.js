@@ -1,5 +1,5 @@
-import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 /* eslint-disable no-param-reassign */
+import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 
 const adapter = createEntityAdapter();
 

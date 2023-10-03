@@ -2,7 +2,7 @@ import { combineReducers, createSelector } from '@reduxjs/toolkit';
 
 import channelsReducer, { actions as channelsActions, selectors as channelsSelectors } from './channelsReducer.js';
 import messagesReducer, { actions as messagesActions, selectors as messagesSelectors } from './messagesReducer.js';
-import modal, { actions as modalActions } from './modal.js';
+import modalReducer, { actions as modalActions } from './modalReducer.js';
 
 const getCurrentChannelId = (state) => state.channels.currentChannelId;
 
@@ -42,5 +42,5 @@ export const actions = {
 export default combineReducers({
   channels: channelsReducer,
   messages: messagesReducer,
-  modal,
+  modal: modalReducer,
 });
