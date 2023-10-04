@@ -6,16 +6,17 @@ import {
 } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import leoProfanity from 'leo-profanity';
 import { useRollbar } from '@rollbar/react';
 
 import getValidationSchema from './getValidationSchema.js';
-import { selectors } from '../../slices/index.js';
+import { selectors, actions } from '../../slices/index.js';
 import useApi from '../../hooks/useApi.js';
 
 const AddChannelForm = ({ handleClose }) => {
+  const dispatch = useDispatch();
   const channels = useSelector(selectors.getChannelsNames);
   const inputRef = useRef(null);
   const api = useApi();
@@ -35,7 +36,9 @@ const AddChannelForm = ({ handleClose }) => {
       const filteredName = leoProfanity.clean(name);
       const channel = { name: filteredName };
       try {
-        await api.createChannel(channel);
+        const res = await api.createChannel(channel);
+        dispatch(actions.setCurrentChannel({ channelId: res.id }));
+        console.log(res);
         toast.success(t('channels.created'));
         handleClose();
       } catch (err) {

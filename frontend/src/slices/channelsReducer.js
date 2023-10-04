@@ -22,11 +22,7 @@ const slice = createSlice({
       const { channelId } = payload;
       state.currentChannelId = channelId;
     },
-    addChannel(state, { payload }) {
-      const { id } = payload;
-      adapter.addOne(state, payload);
-      state.currentChannelId = id;
-    },
+    addChannel: adapter.addOne,
     removeChannel(state, { payload }) {
       const { id } = payload;
       if (state.currentChannelId === id) {
