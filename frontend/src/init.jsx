@@ -1,6 +1,5 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { io } from 'socket.io-client';
@@ -10,7 +9,7 @@ import leoProfanity from 'leo-profanity';
 import AuthProvider from './contexts/AuthProvider.jsx';
 import SoketProvider from './contexts/SoketProvider.jsx';
 import App from './components/App.jsx';
-import reducer, { actions } from './slices/index.js';
+import store, { actions } from './slices/index.js';
 import resources from './locales/index.js';
 import badWords from './locales/badWords.js';
 
@@ -29,10 +28,6 @@ export default async () => {
   const ruDict = leoProfanity.getDictionary('ru');
   leoProfanity.add(ruDict);
   leoProfanity.add(badWords);
-
-  const store = configureStore({
-    reducer,
-  });
 
   const socket = io();
 

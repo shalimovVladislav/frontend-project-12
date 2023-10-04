@@ -1,4 +1,4 @@
-import { combineReducers, createSelector } from '@reduxjs/toolkit';
+import { createSelector, configureStore, combineReducers } from '@reduxjs/toolkit';
 
 import channelsReducer, { actions as channelsActions, selectors as channelsSelectors } from './channelsReducer.js';
 import messagesReducer, { actions as messagesActions, selectors as messagesSelectors } from './messagesReducer.js';
@@ -39,8 +39,12 @@ export const actions = {
   ...modalActions,
 };
 
-export default combineReducers({
+const rootReducer = combineReducers({
   channels: channelsReducer,
   messages: messagesReducer,
   modal: modalReducer,
+});
+
+export default configureStore({
+  reducer: rootReducer,
 });
