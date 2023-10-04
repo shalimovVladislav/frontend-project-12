@@ -3,15 +3,8 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { selectors } from '../slices/index.js';
+import Message from './Message.jsx';
 import NewMessageForm from './NewMessageForm.jsx';
-
-const Message = ({ username, body }) => (
-  <div className="text-break mb-2">
-    <b>{username}</b>
-    {': '}
-    {body}
-  </div>
-);
 
 const ChatBox = () => {
   const channel = useSelector(selectors.getCurrentChannel);
